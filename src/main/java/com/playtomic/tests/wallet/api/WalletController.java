@@ -1,16 +1,23 @@
 package com.playtomic.tests.wallet.api;
 
+import com.sun.istack.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.math.BigDecimal;
 
 @RestController
+@RequestMapping("/wallet")
 public class WalletController {
-    private Logger log = LoggerFactory.getLogger(WalletController.class);
+    @GetMapping("/{id}")
+    public ResponseEntity<Object> getWalletById(@PathVariable Long id){
+        return ResponseEntity.ok().build();
+    }
 
-    @RequestMapping("/")
-    void log() {
-        log.info("Logging from /");
+    @PostMapping
+    public ResponseEntity<Object> createWallet(){
+        return ResponseEntity.ok().build();
     }
 }
