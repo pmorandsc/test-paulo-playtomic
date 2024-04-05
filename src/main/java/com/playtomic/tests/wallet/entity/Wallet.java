@@ -11,8 +11,12 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
+@Table(name = "WALLET")
 public class Wallet {
     @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
+    @Column(name = "balance")
     private BigDecimal balance;
 }
