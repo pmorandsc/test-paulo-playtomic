@@ -1,6 +1,7 @@
 package com.playtomic.tests.wallet.api;
 
 import com.playtomic.tests.wallet.entity.Wallet;
+import com.playtomic.tests.wallet.exception.WalletNotFoundException;
 import com.playtomic.tests.wallet.service.WalletService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -41,6 +42,16 @@ class WalletControllerTest {
     }
 
     @Test
+    public void givenValidIdThenReturnNotFound() throws Exception {
+        // Given
+        when(walletService.getWalletById(any(Long.class))).thenThrow(WalletNotFoundException.class);
+        // When
+        MvcResult response = mockMvc.perform(get("/wallet/1")).andExpect(status().isNotFound()).andReturn();
+        // Then
+        assertThat(response.getResponse().getContentAsString()).isEqualTo("Wallet not found in database");
+    }
+
+    @Test
     public void givenValidWalletThenCreateWallet() throws Exception {
         // Given
         when(walletService.createWallet(any(BigDecimal.class))).thenReturn(new Wallet(1L, new BigDecimal("5.0")));
@@ -60,7 +71,7 @@ class WalletControllerTest {
         when(walletService.charge(any(Long.class), any(BigDecimal.class))).thenReturn(new Wallet(1L, new BigDecimal("5.0")));
         // When
         MvcResult response = mockMvc
-                .perform(post("/1/topup").contentType(MediaType.APPLICATION_JSON).content("{\"balance\": 10.0}"))
+                .perform(post("/wallet/1/topup").contentType(MediaType.APPLICATION_JSON).content("{\"amount\": 10.0}"))
                 .andExpect(status().isOk())
                 .andReturn();
         // Then

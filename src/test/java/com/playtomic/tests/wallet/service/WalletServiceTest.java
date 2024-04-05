@@ -3,7 +3,9 @@ package com.playtomic.tests.wallet.service;
 import com.playtomic.tests.wallet.entity.Wallet;
 import com.playtomic.tests.wallet.exception.WalletNotFoundException;
 import com.playtomic.tests.wallet.repository.WalletRepository;
+import com.playtomic.tests.wallet.service.payment.Payment;
 import com.playtomic.tests.wallet.service.payment.PaymentService;
+import com.playtomic.tests.wallet.service.payment.StripeServiceException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -53,5 +55,30 @@ class WalletServiceTest {
         Throwable thrown = assertThrows(WalletNotFoundException.class, () -> walletService.getWalletById(1L));
         // Then
         assertThat(thrown).isInstanceOf(WalletNotFoundException.class);
+    }
+
+    @Test
+    public void givenValidAmountThenReturnUpdatedWallet(){
+        // Given
+        when(paymentService.charge(any(String.class), any(BigDecimal.class))).thenReturn(new Payment("id"));
+        when(walletRepository.findById(any(Long.class)))
+                .thenReturn(Optional.of(new Wallet(1L, new BigDecimal("20.00"))));
+        // When
+        Wallet result = walletService.charge(1L, new BigDecimal("10.00"));
+        // Then
+        assertThat(result.getId()).isEqualTo(1L);
+        assertThat(result.getBalance()).isEqualTo(new BigDecimal("30.00"));
+    }
+
+    @Test
+    public void givenValidAmountThenReturnStripeException(){
+        // Given
+        when(paymentService.charge(any(String.class), any(BigDecimal.class))).thenThrow(StripeServiceException.class);
+        when(walletRepository.findById(any(Long.class)))
+                .thenReturn(Optional.of(new Wallet()));
+        // When
+        Throwable thrown = assertThrows(StripeServiceException.class, () -> walletService.charge(1L, new BigDecimal(10)));
+        // Then
+        assertThat(thrown).isInstanceOf(StripeServiceException.class);
     }
 }
