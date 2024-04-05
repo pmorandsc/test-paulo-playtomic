@@ -1,7 +1,6 @@
-package com.playtomic.tests.wallet.service;
+package com.playtomic.tests.wallet.service.payment;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Value;
