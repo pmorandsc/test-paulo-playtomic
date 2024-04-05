@@ -19,4 +19,8 @@ public class Wallet {
     private Long id;
     @Column(name = "balance")
     private BigDecimal balance;
+
+    public void increaseBalance(BigDecimal amount) {
+        this.balance = this.balance.add(amount);
+    }
 }

@@ -3,6 +3,7 @@ package com.playtomic.tests.wallet.service;
 import com.playtomic.tests.wallet.entity.Wallet;
 import com.playtomic.tests.wallet.exception.WalletNotFoundException;
 import com.playtomic.tests.wallet.repository.WalletRepository;
+import com.playtomic.tests.wallet.service.payment.PaymentService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -22,11 +23,14 @@ class WalletServiceTest {
     @Mock
     WalletRepository walletRepository;
 
+    @Mock
+    PaymentService paymentService;
+
     WalletService walletService;
 
     @BeforeEach
     public void setUp(){
-        walletService = new WalletService(walletRepository);
+        walletService = new WalletService(walletRepository, paymentService);
     }
 
     @Test
