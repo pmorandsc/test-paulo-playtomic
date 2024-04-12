@@ -5,7 +5,6 @@ import com.playtomic.tests.wallet.exception.WalletNotFoundException;
 import com.playtomic.tests.wallet.repository.WalletRepository;
 import com.playtomic.tests.wallet.service.payment.Payment;
 import com.playtomic.tests.wallet.service.payment.PaymentService;
-import com.playtomic.tests.wallet.service.payment.StripeService;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;

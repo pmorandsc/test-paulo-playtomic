@@ -10,7 +10,6 @@ import java.math.BigDecimal;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
 @Table(name = "WALLET")
 public class Wallet {
     @Id
@@ -19,6 +18,14 @@ public class Wallet {
     private Long id;
     @Column(name = "balance")
     private BigDecimal balance;
+    @Version
+    private Integer version;
+
+    public Wallet(Long id, BigDecimal balance){
+        this.id = id;
+        this.balance = balance;
+        this.version = 0;
+    }
 
     public void increaseBalance(BigDecimal amount) {
         this.balance = this.balance.add(amount);
